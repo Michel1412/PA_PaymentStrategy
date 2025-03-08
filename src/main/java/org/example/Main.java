@@ -5,6 +5,7 @@ import org.example.domain.services.BoletoPayment;
 import org.example.domain.services.CreditCardPayment;
 import org.example.domain.services.PixPayment;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
@@ -20,17 +21,19 @@ public class Main {
             System.out.println("Qual opcao de pagamento vc deseja utilizar:\n1 - Pix\n2 - Cartao de Credito\n3 - Boleto\n0 - Sair");
             opt = sc.nextInt();
 
+            PaymentProcessor processor = null;
+
             switch (opt) {
                 case 1:
-                    PaymentProcessor.execute(new PixPayment());
+                    processor = new PaymentProcessor(new PixPayment());
                     break;
 
                 case 2:
-                    PaymentProcessor.execute(new CreditCardPayment());
+                    processor = new PaymentProcessor(new CreditCardPayment());
                     break;
 
                 case 3:
-                    PaymentProcessor.execute(new BoletoPayment());
+                    processor = new PaymentProcessor(new BoletoPayment());
                     break;
 
                 default:
@@ -39,6 +42,11 @@ public class Main {
 
                     opt = 0;
             }
+
+            if (Objects.nonNull(processor)) {
+                processor.execute();
+            }
+
         } while (opt != 0);
 
     }
